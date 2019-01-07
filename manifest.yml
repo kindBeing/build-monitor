@@ -1,0 +1,7 @@
+applications:
+- name: build-monitor
+  path: build/libs/build-monitor.jar
+  routes:
+  - route: gpdb-build-monitor
+services:
+  - gpdb-database
