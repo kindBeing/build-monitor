@@ -3,5 +3,14 @@ applications:
   path: build/libs/build-monitor.jar
   routes:
   - route: gpdb-build-monitor
+  env:
+    ORG:
+    REPO:
+    BRANCH:
+    UPSTREAM_ORG:
+    UPSTREAM_REPO:
+    UPSTREAM_BRANCH:
+    ACCESS_TOKEN:
+
 services:
   - gpdb-database
