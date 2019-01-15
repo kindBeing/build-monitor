@@ -1,91 +1,91 @@
-<html>
-<body>
-    <div align="center" style="font-size:100px">PR Tracking</div>
-    <div align="center" style="font-size:30px" id="list"></div>
-    <script type="text/javascript">
-        const upstream_org = "";
-        const upstream_repo = "";
+<!--<html>-->
+<!--<body>-->
+    <!--<div align="center" style="font-size:100px">PR Tracking</div>-->
+    <!--<div align="center" style="font-size:30px" id="list"></div>-->
+    <!--<script type="text/javascript">-->
+        <!--const upstream_org = "";-->
+        <!--const upstream_repo = "";-->
 
-        const access_token = "";
+        <!--const access_token = "";-->
 
-        //List of PR ids as strings
-        // const pr_id_list = [''];
-        // var total_pr = pr_id_list.length;
-        var merged_pr = 0;
-        var not_merged_pr = 0;
-        var unknown_pr = 0;
+        <!--//List of PR ids as strings-->
+        <!--// const pr_id_list = [''];-->
+        <!--// var total_pr = pr_id_list.length;-->
+        <!--var merged_pr = 0;-->
+        <!--var not_merged_pr = 0;-->
+        <!--var unknown_pr = 0;-->
 
-        async function update_pr() {
-            // total_pr = pr_id_list.length;
-            merged_pr = 0;
-            not_merged_pr = 0;
-            unknown_pr = 0;
-            var pr_info = '';
+        <!--async function update_pr() {-->
+            <!--// total_pr = pr_id_list.length;-->
+            <!--merged_pr = 0;-->
+            <!--not_merged_pr = 0;-->
+            <!--unknown_pr = 0;-->
+            <!--var pr_info = '';-->
 
-            // for(index = 0; index < total_pr; index++) {
-            //     pr_info+= await check_status(pr_id_list[index]);
-            // }
+            <!--// for(index = 0; index < total_pr; index++) {-->
+            <!--//     pr_info+= await check_status(pr_id_list[index]);-->
+            <!--// }-->
 
-            var merged_pr_percent = ((merged_pr / total_pr) * 100).toFixed(2);
-            var not_merged_pr_percent = ((not_merged_pr / total_pr) * 100).toFixed(2);
-            var unknown_pr_percent = ((unknown_pr / total_pr) * 100).toFixed(2);
+            <!--var merged_pr_percent = ((merged_pr / total_pr) * 100).toFixed(2);-->
+            <!--var not_merged_pr_percent = ((not_merged_pr / total_pr) * 100).toFixed(2);-->
+            <!--var unknown_pr_percent = ((unknown_pr / total_pr) * 100).toFixed(2);-->
 
-            document.getElementById("list").innerHTML =
-                "<table style=\"font-size:30px;border:2px solid black\">" +
-                "<th style=\"width:300px;border:1px solid black\">Total PRs</th>" +
-                "<th style=\"width:300px;border:1px solid black\">Merged</th>" +
-                "<th style=\"width:300px;border:1px solid black\">Not Merged</th>" +
-                "<th style=\"width:300px;border:1px solid black\">Unknown</th>" +
-                "<tr>" +
-                "<td style=\"text-align:center;border:1px solid black\">" + total_pr +"</td>" +
-                "<td style=\"text-align:center;border:1px solid black\">" + merged_pr + " / " + merged_pr_percent + "%</td>" +
-                "<td style=\"text-align:center;border:1px solid black\">" + not_merged_pr + " / " + not_merged_pr_percent + "%</td>" +
-                "<td style=\"text-align:center;border:1px solid black\">" + unknown_pr + " / " + unknown_pr_percent + "%</td>" +
-                "</tr>" +
-                "</table>" +
-                "<br/><br/>" +
-                "<table style=\"font-size:30px;border:2px solid black\">" +
-                "<th style=\"width:300px;border:1px solid black\">Pull Request ID</th>" +
-                "<th style=\"width:300px;border:1px solid black\">Status</th>" +
-                "<th style=\"width:50px;border:1px solid black\"></th>" +
-                pr_info +
-                "</table>";
-        }
+            <!--document.getElementById("list").innerHTML =-->
+                <!--"<table style=\"font-size:30px;border:2px solid black\">" +-->
+                <!--"<th style=\"width:300px;border:1px solid black\">Total PRs</th>" +-->
+                <!--"<th style=\"width:300px;border:1px solid black\">Merged</th>" +-->
+                <!--"<th style=\"width:300px;border:1px solid black\">Not Merged</th>" +-->
+                <!--"<th style=\"width:300px;border:1px solid black\">Unknown</th>" +-->
+                <!--"<tr>" +-->
+                <!--"<td style=\"text-align:center;border:1px solid black\">" + total_pr +"</td>" +-->
+                <!--"<td style=\"text-align:center;border:1px solid black\">" + merged_pr + " / " + merged_pr_percent + "%</td>" +-->
+                <!--"<td style=\"text-align:center;border:1px solid black\">" + not_merged_pr + " / " + not_merged_pr_percent + "%</td>" +-->
+                <!--"<td style=\"text-align:center;border:1px solid black\">" + unknown_pr + " / " + unknown_pr_percent + "%</td>" +-->
+                <!--"</tr>" +-->
+                <!--"</table>" +-->
+                <!--"<br/><br/>" +-->
+                <!--"<table style=\"font-size:30px;border:2px solid black\">" +-->
+                <!--"<th style=\"width:300px;border:1px solid black\">Pull Request ID</th>" +-->
+                <!--"<th style=\"width:300px;border:1px solid black\">Status</th>" +-->
+                <!--"<th style=\"width:50px;border:1px solid black\"></th>" +-->
+                <!--pr_info +-->
+                <!--"</table>";-->
+        <!--}-->
 
-        // async function check_status(pr_id) {
-        //     const github_response = await fetch("https://api.github.com/repos/"
-        //                                         + upstream_org + "/" + upstream_repo + "/pulls/" + pr_id +
-        //                                         "/merge?access_token=" + access_token)
-        //     const github_status = await github_response.status;
+        <!--// async function check_status(pr_id) {-->
+        <!--//     const github_response = await fetch("https://api.github.com/repos/"-->
+        <!--//                                         + upstream_org + "/" + upstream_repo + "/pulls/" + pr_id +-->
+        <!--//                                         "/merge?access_token=" + access_token)-->
+        <!--//     const github_status = await github_response.status;-->
 
-            if (github_status === 204) {
-                merged_pr +=1;
-                return "<tr>" +
-                    "<td style=\"text-align:center;border:1px solid black\">" + pr_id + "</td>" +
-                    "<td style=\"text-align:center;border:1px solid black\">Merged</td>" +
-                    "<td style=\"text-align:center;border:1px solid black\"><span style=\"height: 25px;width: 25px;background-color: green;border-radius: 50%;display: inline-block;\"></span></td>" +
-                    "</tr>";
-            }
-            else if (github_status === 404) {
-                not_merged_pr +=1;
-                return "<tr>" +
-                    "<td style=\"text-align:center;border:1px solid black\">" + pr_id + "</td>" +
-                    "<td style=\"text-align:center;border:1px solid black\">Not Merged</td>" +
-                    "<td style=\"text-align:center;border:1px solid black\"><span style=\"height: 25px;width: 25px;background-color: orange;border-radius: 50%;display: inline-block;\"></span></td>" +
-                    "</tr>";
-            }
-            else {
-                unknown_pr +=1;
-                return "<tr>" +
-                    "<td style=\"text-align:center;border:1px solid black\">" + pr_id + "</td>" +
-                    "<td style=\"text-align:center;border:1px solid black\">Unknown</td>" +
-                    "<td style=\"text-align:center;border:1px solid black\"><span style=\"height: 25px;width: 25px;background-color: red;border-radius: 50%;display: inline-block;\"></span></td>" +
-                    "</tr>";
-            }
-        }
+            <!--if (github_status === 204) {-->
+                <!--merged_pr +=1;-->
+                <!--return "<tr>" +-->
+                    <!--"<td style=\"text-align:center;border:1px solid black\">" + pr_id + "</td>" +-->
+                    <!--"<td style=\"text-align:center;border:1px solid black\">Merged</td>" +-->
+                    <!--"<td style=\"text-align:center;border:1px solid black\"><span style=\"height: 25px;width: 25px;background-color: green;border-radius: 50%;display: inline-block;\"></span></td>" +-->
+                    <!--"</tr>";-->
+            <!--}-->
+            <!--else if (github_status === 404) {-->
+                <!--not_merged_pr +=1;-->
+                <!--return "<tr>" +-->
+                    <!--"<td style=\"text-align:center;border:1px solid black\">" + pr_id + "</td>" +-->
+                    <!--"<td style=\"text-align:center;border:1px solid black\">Not Merged</td>" +-->
+                    <!--"<td style=\"text-align:center;border:1px solid black\"><span style=\"height: 25px;width: 25px;background-color: orange;border-radius: 50%;display: inline-block;\"></span></td>" +-->
+                    <!--"</tr>";-->
+            <!--}-->
+            <!--else {-->
+                <!--unknown_pr +=1;-->
+                <!--return "<tr>" +-->
+                    <!--"<td style=\"text-align:center;border:1px solid black\">" + pr_id + "</td>" +-->
+                    <!--"<td style=\"text-align:center;border:1px solid black\">Unknown</td>" +-->
+                    <!--"<td style=\"text-align:center;border:1px solid black\"><span style=\"height: 25px;width: 25px;background-color: red;border-radius: 50%;display: inline-block;\"></span></td>" +-->
+                    <!--"</tr>";-->
+            <!--}-->
+        <!--}-->
 
-        update_pr();
-        window.setInterval(update_pr, 60000);
-    </script>
-</body>
-</html>
+        <!--update_pr();-->
+        <!--window.setInterval(update_pr, 60000);-->
+    <!--</script>-->
+<!--</body>-->
+<!--</html>-->

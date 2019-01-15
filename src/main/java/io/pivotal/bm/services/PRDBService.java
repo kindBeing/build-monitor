@@ -2,8 +2,6 @@ package io.pivotal.bm.services;
 
 import io.pivotal.bm.domain.PRDBRepository;
 import io.pivotal.bm.models.PREntry;
-import io.pivotal.bm.models.RepoInfo;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,8 +10,6 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
@@ -46,12 +42,7 @@ public class PRDBService implements PRDBRepository {
 
     @Override
     public int countUnmerged() {
-        ResultSetExtractor<Integer> countExtractor = new ResultSetExtractor<Integer>() {
-            @Override
-            public Integer extractData(ResultSet rs) throws SQLException, DataAccessException {
-                return rs.next() ? rs.getInt("count") : 0;
-            }
-        };
+        ResultSetExtractor<Integer> countExtractor = rs -> rs.next() ? rs.getInt("count") : 0;
         return jdbcTemplate.query("SELECT COUNT(*) as count FROM pull_requests WHERE status='UNMERGED'", countExtractor);
     }
 
