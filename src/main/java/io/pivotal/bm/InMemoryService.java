@@ -1,38 +1,13 @@
 package io.pivotal.bm;
 
-import io.pivotal.bm.models.PREntry;
-import org.springframework.context.annotation.Profile;
-
-import java.util.List;
-
-public class InMemoryService implements BMRepository {
+public class InMemoryService implements GitDBRepository {
     @Override
-    public void create(PREntry entry) {
+    public void update() {
 
     }
 
     @Override
-    public void create(Iterable<PREntry> entries) {
+    public void remove() {
 
-    }
-
-    @Override
-    public void update(PREntry entry) {
-
-    }
-
-    @Override
-    public void remove(PREntry entry) {
-
-    }
-
-    @Override
-    public List<PREntry> list() {
-        return null;
-    }
-
-    @Override
-    public List<PREntry> listUnmerged() {
-        return null;
     }
 }

@@ -2,11 +2,12 @@ package io.pivotal.bm;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.pivotal.bm.git.PRManager;
-import io.pivotal.bm.git.RepoManager;
-import io.pivotal.bm.services.GitDataService;
+import io.pivotal.bm.domain.PRWebRepository;
+import io.pivotal.bm.domain.RepoWebRepository;
+import io.pivotal.bm.services.PRWebService;
+import io.pivotal.bm.services.RepoWebService;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
@@ -25,18 +26,13 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public URLProvider urlProvider(){
-        return new URLProvider();
+    public RepoWebRepository repoWebRepository(RestTemplateBuilder restTemplateBuilder){
+        return new RepoWebService(restTemplateBuilder);
     }
 
     @Bean
-    public RepoManager repoManager(BMRepository bmRepository, GitDataService gitDataService, URLProvider urlProvider){
-        return new RepoManager(bmRepository, gitDataService, urlProvider);
-    }
-
-    @Bean
-    public PRManager prManager(BMRepository bmRepository, GitDataService gitDataService, URLProvider urlProvider){
-        return new PRManager(bmRepository, gitDataService, urlProvider);
+    public PRWebRepository prWebRepository(RestTemplateBuilder restTemplateBuilder){
+        return new PRWebService(restTemplateBuilder);
     }
 
     @Bean

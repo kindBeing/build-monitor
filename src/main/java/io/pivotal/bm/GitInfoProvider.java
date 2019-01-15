@@ -1,5 +1,7 @@
 package io.pivotal.bm;
 
+import io.pivotal.bm.domain.PRDBRepository;
+import io.pivotal.bm.domain.RepoDBRepository;
 import io.pivotal.bm.models.DisplayObject;
 import io.pivotal.bm.models.PREntry;
 import io.pivotal.bm.models.PRStats;
@@ -9,24 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GitInfoProvider {
-    private BMRepository bmRepository;
+    private RepoDBRepository repoRepository;
+    private PRDBRepository prRepository;
     private List<PREntry> prEntryList;
     private PRStats prStats;
     private RepoInfo repoInfo;
 
 
-    public GitInfoProvider(BMRepository bmRepository) {
-        this.bmRepository = bmRepository;
+    public GitInfoProvider(RepoDBRepository repoRepository, PRDBRepository prRepository) {
+        this.repoRepository = repoRepository;
+        this.prRepository = prRepository;
         this.prEntryList = new ArrayList<>();
     }
 
     public DisplayObject getInfo(){
-        prEntryList = bmRepository.list();
-        prStats = new PRStats(prEntryList.size(), bmRepository.countUnmerged(), bmRepository.countUnknown());
-        repoInfo = bmRepository.getRepoInfo();
-
-
+        prEntryList = prRepository.list();
+        prStats = new PRStats(prEntryList.size(), prRepository.countUnmerged(), prRepository.countUnknown());
+        repoInfo = repoRepository.getRepoInfo();
         DisplayObject displayObject = new DisplayObject(prEntryList, prStats, repoInfo);
+
         return displayObject;
     }
 }
