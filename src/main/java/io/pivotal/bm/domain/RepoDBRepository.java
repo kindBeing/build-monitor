@@ -5,4 +5,5 @@ import io.pivotal.bm.models.RepoInfo;
 public interface RepoDBRepository {
     void create(RepoInfo repoInfo);
     RepoInfo getRepoInfo();
+    void update(RepoInfo repoInfo);
 }

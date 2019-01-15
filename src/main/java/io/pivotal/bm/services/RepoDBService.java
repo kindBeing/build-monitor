@@ -52,4 +52,21 @@ public class RepoDBService implements RepoDBRepository {
         };
         return jdbcTemplate.query("SELECT  * FROM repo_info", repoExtractor);
     }
+
+    @Override
+    public void update(RepoInfo repoInfo) {
+        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE git_repository SET status=?, build_state=?, build_color=?, commit_difference=? WHERE id=1)",
+                    RETURN_GENERATED_KEYS
+            );
+            statement.setString(1, repoInfo.getStatus());
+            statement.setString(2, repoInfo.getBuildState());
+            statement.setString(3, repoInfo.getBuildColor());
+            statement.setInt(4, repoInfo.getCountCommitDifference());
+            return statement;
+        }, generatedKeyHolder);
+    }
 }

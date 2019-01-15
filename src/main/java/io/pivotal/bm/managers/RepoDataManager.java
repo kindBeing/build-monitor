@@ -23,6 +23,12 @@ public class RepoDataManager implements DataManager {
     @Async
     public void manage() {
         RepoInfo repoInfo = webRepository.fetch();
-        repository.create(repoInfo); // TODO: If not present.
+
+        if(repository.getRepoInfo() == null) {
+            repository.create(repoInfo);
+        } else {
+            repository.update(repoInfo);
+        }
+         // TODO: If not present.
     }
 }

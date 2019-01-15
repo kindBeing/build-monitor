@@ -2,6 +2,7 @@ package io.pivotal.bm.services;
 
 import io.pivotal.bm.domain.PRDBRepository;
 import io.pivotal.bm.models.PREntry;
+import io.pivotal.bm.models.RepoInfo;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -72,7 +73,23 @@ public class PRDBService implements PRDBRepository {
 
     @Override
     public void updateUnmerged(List<PREntry> newPREntries) {
+        for(PREntry entry: newPREntries){
+            update(entry);
+        }
+    }
 
+    private void update(PREntry entry) {
+        KeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE pull_requests SET status=? WHERE prid=?)",
+                    RETURN_GENERATED_KEYS
+            );
+            statement.setString(1, entry.getStatus());
+            statement.setString(2, entry.getPrId());
+            return statement;
+        }, generatedKeyHolder);
     }
 
     private final RowMapper<PREntry> mapper = (rs, rowNum) -> new PREntry(
