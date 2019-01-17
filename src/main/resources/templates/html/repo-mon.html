@@ -1,77 +1,77 @@
-<!--<html>-->
-<!--<body>-->
-<!--<div align="center" style="font-size:300px">Your project name</div>-->
-<!--<div align="center" style="font-size:100px" id="message"></div>-->
-<!--<div align="center" style="font-size:50px" id="extra"></div>-->
-<!--<div align="center" style="height:100px" id="image"></div>-->
-<!--<script type="text/javascript">-->
-    <!--const your_org = "";-->
-    <!--const your_repo = "";-->
-    <!--const your_branch = "";-->
+<html>
+<body>
+<div align="center" style="font-size:300px">Your project name</div>
+<div align="center" style="font-size:100px" id="message"></div>
+<div align="center" style="font-size:50px" id="extra"></div>
+<div align="center" style="height:100px" id="image"></div>
+<script type="text/javascript">
+    const your_org = "";
+    const your_repo = "";
+    const your_branch = "";
 
-    <!--const upstream_org = "";-->
-    <!--const upstream_repo = "";-->
-    <!--const upstream_branch = "";-->
+    const upstream_org = "";
+    const upstream_repo = "";
+    const upstream_branch = "";
 
-    <!--const access_token = "";-->
+    const access_token = "";
 
-    <!--var bad_color = "#FF0000";-->
-    <!--var good_color = "#00FF00";-->
-    <!--var build_check_in_progress_color = "#FCE205";-->
-    <!--var build_check_fail_color = "#FFA500";-->
+    var bad_color = "#FF0000";
+    var good_color = "#00FF00";
+    var build_check_in_progress_color = "#FCE205";
+    var build_check_fail_color = "#FFA500";
 
-    <!--async function check_status() {-->
-        <!--// const github_compare_response = await fetch("https://api.github.com/repos/"-->
-        <!--//                                                 + your_org +"/" + your_repo + "/compare/" + your_branch +-->
-        <!--//                                                 "..." + upstream_repo + ":" + upstream_branch +-->
-        <!--//                                                 "?access_token=" + access_token);-->
-        <!--// const github_compare_json = await github_compare_response.json();-->
-        <!--// const status = github_compare_json.status;-->
-        <!--// const commit_diff_count = github_compare_json.total_commits;-->
-        <!--//-->
-        <!--// const github_branch_response = await fetch("https://api.github.com/repos/"-->
-        <!--//                                                 + upstream_org + "/" + upstream_repo + "/branches/" + upstream_branch +-->
-        <!--//                                                 "?access_token=" + access_token);-->
-        <!--// const github_branch_json = await github_branch_response.json();-->
-        <!--// const branch_sha = github_branch_json.commit.sha;-->
-        <!--//-->
-        <!--// const github_build_response = await fetch("https://api.github.com/repos/"-->
-        <!--//                                                 + upstream_org + "/" + upstream_repo + "/commits/" + branch_sha +-->
-        <!--//                                                 "/status?access_token=" + access_token);-->
-        <!--// const github_build_json = await github_build_response.json();-->
-        <!--// const github_build_state = github_build_json.state;-->
+    async function check_status() {
+        // const github_compare_response = await fetch("https://api.github.com/repos/"
+        //                                                 + your_org +"/" + your_repo + "/compare/" + your_branch +
+        //                                                 "..." + upstream_repo + ":" + upstream_branch +
+        //                                                 "?access_token=" + access_token);
+        // const github_compare_json = await github_compare_response.json();
+        // const status = github_compare_json.status;
+        // const commit_diff_count = github_compare_json.total_commits;
+        //
+        // const github_branch_response = await fetch("https://api.github.com/repos/"
+        //                                                 + upstream_org + "/" + upstream_repo + "/branches/" + upstream_branch +
+        //                                                 "?access_token=" + access_token);
+        // const github_branch_json = await github_branch_response.json();
+        // const branch_sha = github_branch_json.commit.sha;
+        //
+        // const github_build_response = await fetch("https://api.github.com/repos/"
+        //                                                 + upstream_org + "/" + upstream_repo + "/commits/" + branch_sha +
+        //                                                 "/status?access_token=" + access_token);
+        // const github_build_json = await github_build_response.json();
+        // const github_build_state = github_build_json.state;
 
-        <!--if(status === "identical") {-->
-            <!--document.body.bgColor = good_color;-->
-            <!--document.getElementById("message").innerHTML = "In sync with upstream";-->
-            <!--document.getElementById("extra").innerHTML = "";-->
-            <!--document.getElementById("image").innerHTML = "<img src=\"../../static/images/Happy-Beaver.gif\">";-->
-        <!--} else {-->
-            <!--document.body.bgColor = bad_color;-->
-            <!--document.getElementById("message").innerHTML = "Upstream is " + status + " by " + commit_diff_count + " commits";-->
-            <!--document.getElementById("extra").innerHTML = "Last commit on upstream passed build checks, please sync";-->
-            <!--document.getElementById("image").innerHTML = "<img src=\"../../static/images/Time-To-Work-Beaver.gif\">";-->
-        <!--}-->
+        if(status === "identical") {
+            document.body.bgColor = good_color;
+            document.getElementById("message").innerHTML = "In sync with upstream";
+            document.getElementById("extra").innerHTML = "";
+            document.getElementById("image").innerHTML = "<img src=\"../../static/images/Happy-Beaver.gif\">";
+        } else {
+            document.body.bgColor = bad_color;
+            document.getElementById("message").innerHTML = "Upstream is " + status + " by " + commit_diff_count + " commits";
+            document.getElementById("extra").innerHTML = "Last commit on upstream passed build checks, please sync";
+            document.getElementById("image").innerHTML = "<img src=\"../../static/images/Time-To-Work-Beaver.gif\">";
+        }
 
-        <!--if(github_build_state !== "success") {-->
-            <!--if(github_build_state === "failure") {-->
-                <!--document.body.bgColor = build_check_fail_color;-->
-                <!--document.getElementById("extra").innerHTML = "Last commit on upstream failed build checks";-->
-                <!--document.getElementById("image").innerHTML = "<img src=\"../../static/images/Check-Fail-Beaver.gif\">";-->
-            <!--} else if(github_build_state === "pending") {-->
-                <!--document.body.bgColor = build_check_in_progress_color;-->
-                <!--document.getElementById("extra").innerHTML = "Last commit on upstream currently being checked";-->
-                <!--document.getElementById("image").innerHTML = "<img src=\"../../static/images/Check-Pending-Beaver.gif\">";-->
-            <!--} else {-->
-                <!--document.body.bgColor = build_check_fail_color;-->
-                <!--document.getElementById("extra").innerHTML = "Last commit on upstream has unknown build check, verify before syncing";-->
-                <!--document.getElementById("image").innerHTML = "";-->
-            <!--}-->
-        <!--}-->
-    <!--}-->
+        if(github_build_state !== "success") {
+            if(github_build_state === "failure") {
+                document.body.bgColor = build_check_fail_color;
+                document.getElementById("extra").innerHTML = "Last commit on upstream failed build checks";
+                document.getElementById("image").innerHTML = "<img src=\"../../static/images/Check-Fail-Beaver.gif\">";
+            } else if(github_build_state === "pending") {
+                document.body.bgColor = build_check_in_progress_color;
+                document.getElementById("extra").innerHTML = "Last commit on upstream currently being checked";
+                document.getElementById("image").innerHTML = "<img src=\"../../static/images/Check-Pending-Beaver.gif\">";
+            } else {
+                document.body.bgColor = build_check_fail_color;
+                document.getElementById("extra").innerHTML = "Last commit on upstream has unknown build check, verify before syncing";
+                document.getElementById("image").innerHTML = "";
+            }
+        }
+    }
 
-    <!--check_status();-->
-    <!--window.setInterval(check_status, 60000);-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
+    check_status();
+    window.setInterval(check_status, 60000);
+</script>
+</body>
+</html>

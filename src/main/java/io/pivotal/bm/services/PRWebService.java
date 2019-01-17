@@ -1,5 +1,6 @@
 package io.pivotal.bm.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.pivotal.bm.URLProvider;
 import io.pivotal.bm.domain.PRWebRepository;
 import io.pivotal.bm.models.PREntry;
@@ -20,8 +21,8 @@ public class PRWebService implements PRWebRepository {
         this.urlProvider = new URLProvider();
     }
 
-    public CompletableFuture<String> fetch(String url) {
-        return CompletableFuture.completedFuture(restTemplate.getForObject(url, String.class));
+    public CompletableFuture<JsonNode> fetch(String url) {
+        return CompletableFuture.completedFuture(restTemplate.getForObject(url, JsonNode.class));
     }
 
     private List<PREntry> getData(List<PREntry> oldPREntries) {
@@ -29,7 +30,6 @@ public class PRWebService implements PRWebRepository {
             String url = urlProvider.getPullURL(entry.getPrId());
             fetch(url); // incoming data. update oldPREntries or create new list.
         }
-
         return null;
     }
 

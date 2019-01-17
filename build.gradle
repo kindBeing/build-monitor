@@ -29,5 +29,6 @@ dependencies {
     compile group: 'org.springframework.cloud', name: 'spring-cloud-cloudfoundry-connector', version: '2.0.4.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.1.1.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.1.1.RELEASE'
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7")
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.8'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.0.60'
 }

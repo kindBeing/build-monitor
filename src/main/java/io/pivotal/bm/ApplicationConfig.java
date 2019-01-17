@@ -2,7 +2,6 @@ package io.pivotal.bm;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.pivotal.bm.domain.PRWebRepository;
 import io.pivotal.bm.domain.RepoWebRepository;
 import io.pivotal.bm.services.PRWebService;
@@ -20,8 +19,7 @@ public class ApplicationConfig {
     @Bean
     public ObjectMapper jsonObjectMapper() {
         return Jackson2ObjectMapperBuilder.json()
-                .serializationInclusion(JsonInclude.Include.NON_NULL) // Don’t include null values
-                .modules(new JavaTimeModule())
+                .serializationInclusion(JsonInclude.Include.NON_NULL)
                 .build();
     }
 

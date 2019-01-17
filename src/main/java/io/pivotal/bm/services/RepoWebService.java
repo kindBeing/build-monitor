@@ -1,5 +1,6 @@
 package io.pivotal.bm.services;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.pivotal.bm.URLProvider;
 import io.pivotal.bm.domain.RepoWebRepository;
 import io.pivotal.bm.models.RepoInfo;
@@ -17,8 +18,8 @@ public class RepoWebService implements RepoWebRepository {
         this.urlProvider = new URLProvider();
     }
 
-    public CompletableFuture<String> fetch(String url) {
-        return CompletableFuture.completedFuture(restTemplate.getForObject(url, String.class));
+    private CompletableFuture<JsonNode> fetch(String url) {
+        return CompletableFuture.completedFuture(restTemplate.getForObject(url, JsonNode.class));
     }
 
     public RepoInfo fetch() {
@@ -29,15 +30,17 @@ public class RepoWebService implements RepoWebRepository {
         return null;
     }
 
-    private CompletableFuture<String> getData() {
+    private CompletableFuture<JsonNode> getData() {
         return buildData().thenCombine(compareData(), (buildData, compareData) -> {
             // use buildData and compareData to form RepoInfo object to use the data to form RepoInfo Object
             return buildData; // Could be anything.
         });
     }
 
-    private CompletableFuture<String> buildData() {
-        CompletableFuture<String> future = fetch(urlProvider.getBranchURL()).thenCompose(
+    private CompletableFuture<JsonNode> buildData() {
+        CompletableFuture<JsonNode> branchData = fetch(urlProvider.getBranchURL());
+
+        CompletableFuture<JsonNode> future = branchData.thenCompose(
                 json_response -> {
                     System.out.println("Extract branch SHA");
                     return fetch(urlProvider.getBuildURL("sha"));
@@ -45,7 +48,7 @@ public class RepoWebService implements RepoWebRepository {
         return future;
     }
 
-    private CompletableFuture<String> compareData() {
+    private CompletableFuture<JsonNode> compareData() {
         return fetch(urlProvider.getCompareURL());
     }
 }
