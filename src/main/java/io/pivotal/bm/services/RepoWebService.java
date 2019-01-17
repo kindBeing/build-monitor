@@ -13,46 +13,33 @@ public class RepoWebService implements RepoWebRepository {
     private RestTemplate restTemplate;
     private URLProvider urlProvider;
 
-    public RepoWebService(RestTemplateBuilder restTemplateBuilder) {
+    public RepoWebService(RestTemplateBuilder restTemplateBuilder, URLProvider urlProvider) {
         restTemplate = restTemplateBuilder.build();
-        this.urlProvider = new URLProvider();
-    }
-
-    private CompletableFuture<JsonNode> fetch(String url) {
-        return CompletableFuture.completedFuture(restTemplate.getForObject(url, JsonNode.class));
+        this.urlProvider = urlProvider;
     }
 
     public RepoInfo fetch() {
-        // fetch the repo info object. build a new RepoInfo and ship
-
-        getData();
-//        repoInfo = new RepoInfo();
-        return null;
-    }
-
-    private CompletableFuture<JsonNode> getData() {
-        return buildData().thenCombine(compareData(), (buildData, compareData) -> {
-            // use buildData and compareData to form RepoInfo object to use the data to form RepoInfo Object
-            return buildData; // Could be anything.
+        RepoInfo repoInfo = new RepoInfo();
+        CompletableFuture<JsonNode> compareFuture = get(urlProvider.getCompareURL());
+        fetchBuildData().thenAcceptBoth(compareFuture, (buildData, compareData) -> {
+            repoInfo.setStatus(compareData.get("status").asText());
+            repoInfo.setCountCommitDifference(compareData.get("total_commits").asInt());
+            repoInfo.setBuildState(buildData.get("state").asText());
         });
+        return repoInfo;
     }
 
-    private CompletableFuture<JsonNode> buildData() {
-        CompletableFuture<JsonNode> branchData = fetch(urlProvider.getBranchURL());
-
-        CompletableFuture<JsonNode> future = branchData.thenCompose(
-                json_response -> {
-                    System.out.println("Extract branch SHA");
-                    return fetch(urlProvider.getBuildURL("sha"));
-                });
-        return future;
+    private CompletableFuture<JsonNode> fetchBuildData() {
+        CompletableFuture<JsonNode> branchFuture = get(urlProvider.getBranchURL());
+        CompletableFuture<JsonNode> buildFuture = branchFuture.thenCompose(branchData -> {
+            JsonNode commitData = branchData.get("commit");
+            String sha = commitData.get("sha").asText();
+            return get(urlProvider.getBuildURL(sha));
+        });
+        return buildFuture;
     }
 
-    private CompletableFuture<JsonNode> compareData() {
-        return fetch(urlProvider.getCompareURL());
+    private CompletableFuture<JsonNode> get(String url) {
+        return CompletableFuture.completedFuture(restTemplate.getForObject(url, JsonNode.class));
     }
 }
-//    String status = ""; //TODO: compareData.status;
-//    String commitDiffCount = ""; //TODO compareData.total_commits;
-//    String buildState = ""; // TODO: buildData.state;
-//    String buildColor = ""; // TODO: resolver

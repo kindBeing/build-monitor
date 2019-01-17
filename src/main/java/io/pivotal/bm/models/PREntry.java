@@ -2,6 +2,7 @@ package io.pivotal.bm.models;
 
 public class PREntry {
     private String prId;
+
     private String status;
 
     public PREntry(String prid, String status) {
@@ -15,5 +16,9 @@ public class PREntry {
 
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

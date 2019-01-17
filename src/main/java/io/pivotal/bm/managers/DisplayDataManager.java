@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
 
-@Component
+//@Component
 public class DisplayDataManager {
     private static final long delay  = 1000L;
     private static final long period = 60000L;

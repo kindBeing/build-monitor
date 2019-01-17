@@ -24,13 +24,13 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public RepoWebRepository repoWebRepository(RestTemplateBuilder restTemplateBuilder){
-        return new RepoWebService(restTemplateBuilder);
+    public RepoWebRepository repoWebRepository(RestTemplateBuilder restTemplateBuilder, URLProvider urlProvider){
+        return new RepoWebService(restTemplateBuilder, urlProvider);
     }
 
     @Bean
-    public PRWebRepository prWebRepository(RestTemplateBuilder restTemplateBuilder){
-        return new PRWebService(restTemplateBuilder);
+    public PRWebRepository prWebRepository(RestTemplateBuilder restTemplateBuilder, URLProvider urlProvider){
+        return new PRWebService(restTemplateBuilder, urlProvider);
     }
 
     @Bean

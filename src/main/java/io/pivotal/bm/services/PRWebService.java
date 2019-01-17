@@ -13,28 +13,35 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PRWebService implements PRWebRepository {
-    private RestTemplate restTemplate;
     private URLProvider urlProvider;
+    private RestTemplate restTemplate;
+    private String UNKNOWN_STATUS = "UNKNOWN_STATUS";
 
-    public PRWebService(RestTemplateBuilder restTemplateBuilder) {
+
+    PRWebService(RestTemplateBuilder restTemplateBuilder, URLProvider urlProvider) {
         restTemplate = restTemplateBuilder.build();
-        this.urlProvider = new URLProvider();
-    }
-
-    public CompletableFuture<JsonNode> fetch(String url) {
-        return CompletableFuture.completedFuture(restTemplate.getForObject(url, JsonNode.class));
-    }
-
-    private List<PREntry> getData(List<PREntry> oldPREntries) {
-        for(PREntry entry: oldPREntries) {
-            String url = urlProvider.getPullURL(entry.getPrId());
-            fetch(url); // incoming data. update oldPREntries or create new list.
-        }
-        return null;
+        this.urlProvider = urlProvider;
     }
 
     @Override
-    public List<PREntry> fetch(List<PREntry> oldPREntries) {
-        return getData(oldPREntries);
+    public List<PREntry> fetch(List<PREntry> entries) {
+        for(PREntry entry: entries) {
+            String url = urlProvider.getPullURL(entry.getPrId());
+            entry.setStatus(getStatus(url));
+        }
+        return entries;
+    }
+
+    private String getStatus(String url) {
+        final String[] status = {UNKNOWN_STATUS};
+        get(url).thenAccept(prData -> {
+            status[0] = prData.get("status").asText();
+        });
+        return status[0];
+    }
+
+
+    public CompletableFuture<JsonNode> get(String url) {
+        return CompletableFuture.completedFuture(restTemplate.getForObject(url, JsonNode.class));
     }
 }

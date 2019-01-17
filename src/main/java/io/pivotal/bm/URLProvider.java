@@ -1,38 +1,59 @@
 package io.pivotal.bm;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class URLProvider {
-    @Value("${ORG}") String ORG;
-    @Value("${REPO}") String REPO;
-    @Value("${BRANCH}") String BRANCH;
-    @Value("${UPSTREAM_ORG}") String UPSTREAM_ORG;
-    @Value("${UPSTREAM_REPO}") String UPSTREAM_REPO;
-    @Value("${UPSTREAM_BRANCH}") String UPSTREAM_BRANCH;
-    @Value("${ACCESS_TOKEN}") String ACCESS_TOKEN;
+
+    private String org;
+    private String repo;
+    private String branch;
+    private String upstreamOrg;
+    private String upstreamRepo;
+    private String upstreamBranch;
+    private String accessToken;
+
+    @Autowired
+    public URLProvider(@Value("${ORG}") String ORG,
+                       @Value("${REPO}") String REPO,
+                       @Value("${BRANCH}") String BRANCH,
+                       @Value("${UPSTREAM_ORG}") String UPSTREAM_ORG,
+                       @Value("${UPSTREAM_REPO}") String UPSTREAM_REPO,
+                       @Value("${UPSTREAM_BRANCH}") String UPSTREAM_BRANCH,
+                       @Value("${ACCESS_TOKEN}") String ACCESS_TOKEN) {
+        this.org = ORG;
+        this.repo = REPO;
+        this.branch = BRANCH;
+        this.upstreamOrg = UPSTREAM_ORG;
+        this.upstreamBranch = UPSTREAM_BRANCH;
+        this.upstreamRepo = UPSTREAM_REPO;
+        this.accessToken = ACCESS_TOKEN;
+    }
 
     public String getCompareURL(){
         return "https://api.github.com/repos/"
-                + ORG +"/" + REPO + "/compare/" + BRANCH +
-                "..." + UPSTREAM_REPO + ":" + UPSTREAM_BRANCH +
-                "?ACCESS_TOKEN=" + ACCESS_TOKEN;
+                + org +"/" + repo + "/compare/" + branch +
+                "..." + upstreamRepo + ":" + upstreamBranch +
+                "?accessToken=" + accessToken;
     }
     
     public String getBranchURL() {
         return "https://api.github.com/repos/"
-                + UPSTREAM_ORG + "/" + UPSTREAM_REPO + "/branches/" + UPSTREAM_BRANCH +
-                "?ACCESS_TOKEN=" + ACCESS_TOKEN;
+                + upstreamOrg + "/" + upstreamRepo + "/branches/" + upstreamBranch +
+                "?accessToken=" + accessToken;
     }
 
     public String getBuildURL(String branch_sha){
         return "https://api.github.com/repos/"
-                + UPSTREAM_ORG + "/" + UPSTREAM_REPO + "/commits/" + branch_sha +
-                "/status?ACCESS_TOKEN=" + ACCESS_TOKEN;
+                + upstreamOrg + "/" + upstreamRepo + "/commits/" + branch_sha +
+                "/status?accessToken=" + accessToken;
     }
 
     public String getPullURL(String prId) {
         return "https://api.github.com/repos/"
-                + UPSTREAM_ORG + "/" + UPSTREAM_REPO + "/pulls/" + prId +
-                "/merge?access_token=" + ACCESS_TOKEN;
+                + upstreamOrg + "/" + upstreamRepo + "/pulls/" + prId +
+                "/merge?access_token=" + accessToken;
     }
 }
